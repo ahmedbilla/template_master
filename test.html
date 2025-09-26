@@ -1,0 +1,272 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>EduLaunch — Template Moderne & Créatif pour Cours en Ligne</title>
+  <meta name="description" content="Modèle moderne, animé et optimisé pour vendre des cours en ligne. Animations, toasts, effets 3D, et images incluses." />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg:#0b1220; --card:#071226; --muted:#9fb0c9; --accent1:#7c5cff; --accent2:#00d4ff; --glass:rgba(255,255,255,0.04);
+      --maxw:1200px; --radius:16px; --glass-2: rgba(255,255,255,0.03);
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto; background:radial-gradient(circle at 10% 10%, rgba(124,92,255,0.06), transparent 12%), linear-gradient(180deg,#061226 0%, #07102a 60%);color:#eaf4ff;-webkit-font-smoothing:antialiased}
+    .container{max-width:var(--maxw);margin:36px auto;padding:22px}
+
+    /* Header */
+    header{display:flex;align-items:center;justify-content:space-between;gap:18px}
+    .brand{display:flex;gap:12px;align-items:center}
+    .logo{width:58px;height:58px;border-radius:14px;background:linear-gradient(135deg,var(--accent1),var(--accent2));display:grid;place-items:center;font-weight:900;color:#021025;box-shadow:0 12px 30px rgba(0,0,0,0.6)}
+    nav{display:flex;gap:10px;align-items:center}
+    .nav-link{color:var(--muted);padding:8px 12px;border-radius:10px;text-decoration:none;font-weight:600}
+    .primary{background:linear-gradient(90deg,var(--accent1),var(--accent2));color:#021025;padding:10px 14px;border-radius:12px;font-weight:800;border:0;cursor:pointer;box-shadow:0 12px 30px rgba(124,92,255,0.12)}
+
+    /* Hero */
+    .hero{display:grid;grid-template-columns:1fr 480px;gap:28px;align-items:center;margin-top:18px}
+    @media (max-width:980px){.hero{grid-template-columns:1fr} .hero-right{order:-1}}
+    .card{background:linear-gradient(180deg, rgba(255,255,255,0.02), transparent);padding:32px;border-radius:var(--radius);border:1px solid var(--glass);backdrop-filter: blur(6px);position:relative;overflow:hidden}
+
+    .kicker{display:inline-block;padding:8px 12px;border-radius:999px;background:rgba(255,255,255,0.03);color:var(--muted);font-size:13px}
+    h1{font-size:44px;line-height:1.02;margin:16px 0}
+    .accent{background:linear-gradient(90deg,var(--accent1),var(--accent2));-webkit-background-clip:text;background-clip:text;color:transparent}
+    .lead{color:var(--muted);margin-bottom:18px}
+    .hero-cta{display:flex;gap:12px;align-items:center}
+
+    /* Illustration */
+    .hero-visual{position:relative;height:360px;border-radius:12px;overflow:hidden;border:1px solid rgba(255,255,255,0.03);box-shadow:0 18px 50px rgba(2,6,23,0.6)}
+    .hero-visual img{width:100%;height:100%;object-fit:cover;display:block;filter:contrast(.95) saturate(1.05)}
+    .visual-overlay{position:absolute;inset:0;background:linear-gradient(180deg, transparent 20%, rgba(2,6,23,0.5));}
+
+    /* Courses */
+    .section{margin-top:30px}
+    .courses{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+    @media (max-width:1000px){.courses{grid-template-columns:repeat(2,1fr)}}
+    @media (max-width:640px){.courses{grid-template-columns:1fr}}
+
+    .course{background:linear-gradient(180deg, rgba(255,255,255,0.015), transparent);border-radius:12px;padding:14px;border:1px solid rgba(255,255,255,0.02);transition:transform .34s cubic-bezier(.2,.9,.3,1), box-shadow .34s;transform-origin:center center}
+    .course:hover{transform:translateY(-12px) rotateX(6deg);box-shadow:0 28px 60px rgba(2,6,23,0.6)}
+    .course .thumb{height:160px;border-radius:10px;overflow:hidden}
+    .course img{width:100%;height:100%;object-fit:cover}
+    .course h3{margin:10px 0 6px}
+    .meta{display:flex;justify-content:space-between;align-items:center}
+    .tag{padding:6px 10px;border-radius:999px;background:rgba(124,92,255,0.12);color:var(--accent1);font-weight:700}
+
+    /* Effects */
+    .badge-ribbon{position:absolute;left:-36px;top:18px;transform:rotate(-25deg);background:linear-gradient(90deg,#ffb86b,#ff6b9b);color:#021025;padding:8px 60px;border-radius:8px;font-weight:800;box-shadow:0 12px 30px rgba(255,107,155,0.08)}
+
+    /* Benefits */
+    .benefits{display:flex;gap:12px;margin-top:22px}
+    .benefit{flex:1;padding:14px;border-radius:12px;background:linear-gradient(180deg, rgba(255,255,255,0.01), transparent);border:1px solid rgba(255,255,255,0.02);text-align:center}
+
+    /* Testimonials */
+    .testi{margin-top:20px;padding:18px;border-radius:12px;border:1px solid rgba(255,255,255,0.03);background:linear-gradient(180deg, rgba(255,255,255,0.01), transparent)}
+    .testi-slider{display:flex;overflow:hidden}
+    .slide{min-width:100%;padding:10px}
+
+    /* CTA footer */
+    .cta-footer{margin-top:24px;padding:18px;border-radius:12px;background:linear-gradient(90deg,var(--accent1),var(--accent2));color:#021025;display:flex;justify-content:space-between;align-items:center}
+
+    /* Modal */
+    .modal{position:fixed;inset:0;display:grid;place-items:center;background:rgba(2,6,23,0.6);visibility:hidden;opacity:0;transition:opacity .2s,visibility .2s}
+    .modal.show{visibility:visible;opacity:1}
+    .modal-card{background:#071226;padding:20px;border-radius:12px;max-width:720px;width:92%;border:1px solid rgba(255,255,255,0.03)}
+
+    /* Toasts */
+    .toasts{position:fixed;right:20px;top:20px;display:flex;flex-direction:column;gap:10px;z-index:9999}
+    .toast{min-width:260px;background:#061322;padding:12px 14px;border-radius:12px;border-left:6px solid var(--accent1);box-shadow:0 12px 30px rgba(2,6,23,0.6);display:flex;gap:12px;align-items:center}
+    .toast.success{border-left-color:#6ee7b7}
+    .toast.warn{border-left-color:#ffd86b}
+    .toast .tclose{margin-left:auto;background:transparent;border:0;color:var(--muted);cursor:pointer}
+
+    /* small */
+    footer{margin-top:28px;color:var(--muted);display:flex;justify-content:space-between}
+    .small{color:var(--muted);font-size:13px}
+    .shine{position:absolute;inset:auto -120px -60px auto;width:260px;height:260px;background:radial-gradient(circle at 20% 20%, rgba(255,255,255,0.06), transparent);filter:blur(40px);transform:rotate(15deg);opacity:.8}
+
+    /* animations */
+    .fade{opacity:0;transform:translateY(12px);transition:opacity .6s ease, transform .6s ease}
+    .fade.in{opacity:1;transform:none}
+
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="brand">
+        <div class="logo">ED</div>
+        <div>
+          <div style="font-weight:900">EduLaunch</div>
+          <div class="small">Modèle créatif pour cours en ligne • Conversion-first</div>
+        </div>
+      </div>
+      <nav>
+        <a class="nav-link" href="#courses">Cours</a>
+        <a class="nav-link" href="#features">Avantages</a>
+        <a class="nav-link" href="#pricing">Tarifs</a>
+        <button class="primary" id="ctaTop">Commencer</button>
+      </nav>
+    </header>
+
+    <main>
+      <section class="hero" aria-label="hero">
+        <div class="card fade" id="left">
+          <div class="badge-ribbon">Best Seller</div>
+          <div class="kicker">Plateforme d'apprentissage</div>
+          <h1>Créez, vendez et développez vos <span class="accent">cours en ligne</span> — rapidement.</h1>
+          <p class="lead">Un template animé et moderne conçu pour maximiser les conversions : pages de vente, CTA, preuves sociales et tunnels d'achat optimisés.</p>
+          <div class="hero-cta">
+            <button class="primary" id="explore">Voir les cours</button>
+            <button class="nav-link" id="demo">Voir la démo</button>
+          </div>
+
+          <div style="margin-top:18px;display:flex;gap:10px;flex-wrap:wrap">
+            <div class="tag">+5000 étudiants</div>
+            <div class="tag">Satisfaction 4.8★</div>
+          </div>
+        </div>
+
+        <div class="hero-right">
+          <div class="hero-visual card fade" id="visual">
+            <img src="https://images.unsplash.com/photo-1557800636-894a64c1696f?q=80&w=1200&auto=format&fit=crop&ixlib=rb-4.0.3&s=1f918a" alt="students learning">
+            <div class="visual-overlay"></div>
+            <div class="shine"></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="courses">
+        <h2>Nos cours les plus vendus</h2>
+        <div class="courses" id="grid">
+          <!-- Course 1 -->
+          <article class="course fade" data-title="Marketing Digital" data-price="59">
+            <div class="thumb"><img src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?q=80&w=1200&auto=format&fit=crop&ixlib=rb-4.0.3&s=9a3b0d" alt="Marketing"></div>
+            <h3>Marketing Digital : Stratégies qui convertissent</h3>
+            <div class="meta"><div class="small">18h • 32 leçons</div><div class="tag">59€</div></div>
+            <div style="display:flex;gap:8px;margin-top:10px"><button class="primary" onclick="buy(this)">Acheter</button><button class="nav-link" onclick="openModal(this)">Aperçu</button></div>
+          </article>
+
+          <!-- Course 2 -->
+          <article class="course fade" data-title="Python avancé" data-price="49">
+            <div class="thumb"><img src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?q=80&w=1200&auto=format&fit=crop&ixlib=rb-4.0.3&s=7f74c8" alt="Python"></div>
+            <h3>Python pour le développement moderne</h3>
+            <div class="meta"><div class="small">12h • 20 leçons</div><div class="tag">49€</div></div>
+            <div style="display:flex;gap:8px;margin-top:10px"><button class="primary" onclick="buy(this)">Acheter</button><button class="nav-link" onclick="openModal(this)">Aperçu</button></div>
+          </article>
+
+          <!-- Course 3 -->
+          <article class="course fade" data-title="UI/UX" data-price="69">
+            <div class="thumb"><img src="https://images.unsplash.com/photo-1545235617-9465d1f1a0a9?q=80&w=1200&auto=format&fit=crop&ixlib=rb-4.0.3&s=3b6e2f" alt="design"></div>
+            <h3>Design UI/UX : De l'idée au prototype</h3>
+            <div class="meta"><div class="small">10h • 16 leçons</div><div class="tag">69€</div></div>
+            <div style="display:flex;gap:8px;margin-top:10px"><button class="primary" onclick="buy(this)">Acheter</button><button class="nav-link" onclick="openModal(this)">Aperçu</button></div>
+          </article>
+        </div>
+      </section>
+
+      <section class="section" id="features">
+        <h2 id="pricing">Pourquoi EduLaunch ?</h2>
+        <div class="benefits">
+          <div class="benefit fade"><h4>Pages de vente prêtes</h4><p class="small">Templates optimisés pour convertir visiteurs en acheteurs.</p></div>
+          <div class="benefit fade"><h4>Tunnel d'achat</h4><p class="small">Support Stripe / PayPal et hooks pour analytics.</p></div>
+          <div class="benefit fade"><h4>Engagement</h4><p class="small">Quiz, certificats et communauté pour augmenter la rétention.</p></div>
+        </div>
+      </section>
+
+      <section class="section" id="testimonials">
+        <h2>Témoignages</h2>
+        <div class="testi fade">
+          <div class="testi-slider" id="testiSlider">
+            <div class="slide"><strong>"J'ai doublé mes revenus en 2 mois."</strong><div class="small">— Amine</div></div>
+            <div class="slide"><strong>"Support réactif et contenu de qualité."</strong><div class="small">— Salma</div></div>
+            <div class="slide"><strong>"Très bon rapport qualité/prix."</strong><div class="small">— Youssef</div></div>
+          </div>
+        </div>
+      </section>
+
+      <div class="cta-footer">
+        <div>
+          <div style="font-weight:800">Prêt à vendre votre premier cours ?</div>
+          <div class="small">Lancez un cours aujourd'hui et atteignez des milliers d'étudiants.</div>
+        </div>
+        <div style="display:flex;gap:10px">
+          <button class="primary" onclick="document.getElementById('grid').scrollIntoView({behavior:'smooth'})">Commencer</button>
+          <button class="nav-link" onclick="openModal(null,0)">Voir la démo</button>
+        </div>
+      </div>
+
+      <footer>
+        <div>© 2025 EduLaunch</div>
+        <div style="display:flex;gap:12px"><a class="nav-link" href="#">Contact</a><a class="nav-link" href="#">Politique</a></div>
+      </footer>
+    </main>
+
+    <!-- Modal -->
+    <div class="modal" id="modal">
+      <div class="modal-card">
+        <button style="float:right;background:transparent;border:0;color:var(--muted);font-weight:700" onclick="closeModal()">X</button>
+        <div id="modalContent"></div>
+      </div>
+    </div>
+
+    <!-- Toasts container -->
+    <div class="toasts" id="toasts" aria-live="polite" aria-atomic="true"></div>
+  </div>
+
+  <script>
+    // Appearance: reveal fades
+    window.addEventListener('load', ()=>{ document.querySelectorAll('.fade').forEach((el,i)=>setTimeout(()=>el.classList.add('in'),120*i)); });
+
+    // Simple 3D tilt on mouse move for courses
+    document.querySelectorAll('.course').forEach(card=>{
+      card.addEventListener('mousemove', e=>{
+        const r = card.getBoundingClientRect();
+        const x = (e.clientX - r.left)/r.width - 0.5;
+        const y = (e.clientY - r.top)/r.height - 0.5;
+        card.style.transform = `perspective(900px) translateY(-8px) rotateX(${ -y*8 }deg) rotateY(${ x*10 }deg)`;
+      });
+      card.addEventListener('mouseleave', ()=>{ card.style.transform=''; });
+    });
+
+    // Modal
+    function openModal(el,price){
+      let title='Présentation';
+      if(el){ title = el.closest('.course').querySelector('h3').innerText; price = el.closest('.course').dataset.price; }
+      document.getElementById('modalContent').innerHTML = `<h3>${title}</h3><p class='small' style='margin-top:8px'>Prix: ${price?price+'€':'Gratuit / Demo'}</p><p style='margin-top:12px;color:var(--muted)'>Ceci est un aperçu. Pour connecter un vrai paiement, intégrez Stripe ou PayPal côté serveur.</p><div style='display:flex;gap:8px;margin-top:12px'><button class='primary' onclick='purchase("${title}",${price||0})'>Acheter</button><button class='nav-link' onclick='closeModal()'>Fermer</button></div>`;
+      document.getElementById('modal').classList.add('show');
+    }
+    function closeModal(){ document.getElementById('modal').classList.remove('show'); }
+
+    // Toast helper
+    function showToast(message, type='info', timeout=4200){
+      const container = document.getElementById('toasts');
+      const t = document.createElement('div'); t.className = `toast ${type==='success'?'success':type==='warn'?'warn':''}`;
+      t.innerHTML = `<div>${message}</div><button class='tclose' aria-label='close'>&times;</button>`;
+      container.appendChild(t);
+      t.querySelector('.tclose').addEventListener('click', ()=>{ t.remove(); });
+      setTimeout(()=>{ t.animate([{opacity:1, transform:'translateY(0)'},{opacity:0, transform:'translateY(-14px)'}],{duration:420, easing:'ease'}); setTimeout(()=>t.remove(),420); }, timeout);
+    }
+
+    // Purchase flow (demo)
+    function buy(btn){
+      const course = btn.closest('.course');
+      const title = course.querySelector('h3').innerText;
+      const price = course.dataset.price;
+      showToast(`Ajout de « ${title} » au panier`, 'success', 2500);
+      setTimeout(()=>{ showToast('Paiement simulé — achat réussi ✅', 'success', 3200); }, 900);
+    }
+    function purchase(title,price){ closeModal(); showToast(`Paiement pour « ${title} »: ${price}€ — réussi`, 'success', 3800); }
+
+    // Testimonials auto-slider
+    (function(){ const s=document.getElementById('testiSlider'); let idx=0; setInterval(()=>{ idx=(idx+1)%3; s.style.transform=`translateX(${-idx*100}%)`; },5000); })();
+
+    // CTA actions
+    document.getElementById('ctaTop').addEventListener('click', ()=>{ document.getElementById('grid').scrollIntoView({behavior:'smooth'}); showToast('Direction: cours populaires', 'info'); });
+    document.getElementById('explore').addEventListener('click', ()=>{ document.getElementById('grid').scrollIntoView({behavior:'smooth'}); });
+    document.getElementById('demo').addEventListener('click', ()=>openModal(null,0));
+
+  </script>
+</body>
+</html>

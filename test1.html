@@ -1,0 +1,412 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>EduLaunch — Plateforme de cours en ligne</title>
+  <meta name="description" content="EduLaunch - Modèle moderne pour vendre des cours en ligne. Design conversion-first, animations, et UI responsive." />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+  <!-- Particles.js CDN for creative particle effects -->
+  <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+  <style>
+    :root{
+      --bg:#0b1020; --card:#0f1724; --muted:#9aa4b2; --accent:#7c5cff; --accent-2:#00d4ff; --glass:rgba(255,255,255,0.04);
+      --container:1100px; --radius:14px;
+      --light-bg:#f0f4ff; --light-card:#ffffff; --light-muted:#6b7280; --light-glass:rgba(0,0,0,0.04);
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto; background:linear-gradient(180deg,#071025 0%, #081229 60%);color:#e8f0ff;-webkit-font-smoothing:antialiased;transition: all 0.3s ease;}
+    body.light-mode {background: linear-gradient(180deg, #e0e7ff 0%, #dbeafe 60%); color: #1f2937; --bg:var(--light-bg); --card:var(--light-card); --muted:var(--light-muted); --glass:var(--light-glass);}
+    .wrap{max-width:var(--container);margin:36px auto;padding:20px}
+
+    /* Header */
+    header{display:flex;align-items:center;justify-content:space-between;gap:18px}
+    .brand{display:flex;gap:12px;align-items:center}
+    .logo{width:56px;height:56px;border-radius:12px;background:linear-gradient(135deg,var(--accent),var(--accent-2));display:grid;place-items:center;font-weight:800;color:#021025}
+    nav{display:flex;gap:12px}
+    .nav-link{color:var(--muted);padding:8px 12px;border-radius:10px;text-decoration:none}
+    .cta{background:linear-gradient(90deg,var(--accent),var(--accent-2));color:#021025;padding:10px 14px;border-radius:12px;font-weight:700;border:0;cursor:pointer;transition: transform 0.2s;}
+    .cta:hover{transform: scale(1.05);}
+
+    .slider {position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #ccc; transition: .4s; border-radius: 20px;}
+    .slider:before {position: absolute; content: ""; height: 16px; width: 16px; left: 2px; bottom: 2px; background-color: white; transition: .4s; border-radius: 50%;}
+    input:checked + .slider {background-color: var(--accent);}
+    input:checked + .slider:before {transform: translateX(20px);}
+
+    /* Hero with Parallax and Particles */
+    .hero{display:grid;grid-template-columns:1fr 420px;gap:28px;margin-top:18px;align-items:center;position: relative;}
+    @media (max-width:980px){.hero{grid-template-columns:1fr} .right-hero{order:-1}}
+    .hero-card{background:linear-gradient(180deg, rgba(255,255,255,0.02), transparent);padding:32px;border-radius:var(--radius);border:1px solid var(--glass);backdrop-filter: blur(6px)}
+    .kicker{display:inline-block;padding:8px 12px;border-radius:999px;background:rgba(255,255,255,0.03);color:var(--muted);font-size:13px}
+    h1{font-size:40px;line-height:1.02;margin:14px 0}
+    .typed{color:var(--accent);}
+    p.lead{color:var(--muted);margin:8px 0 20px}
+    .hero-cta{display:flex;gap:12px;align-items:center}
+    #particles-js {position: absolute; width: 100%; height: 100%; top: 0; left: 0; z-index: -1;}
+    .parallax-blob {position: absolute; right: -60px; top: -40px; width: 320px; height: 320px; border-radius: 50%; background: radial-gradient(circle at 30% 30%, rgba(124,92,255,0.18), rgba(0,212,255,0.06)); filter: blur(36px); transform: translateZ(-1px) scale(2); background-attachment: fixed;}
+
+    /* Right hero: enrollment box with Countdown */
+    .enroll{background:linear-gradient(180deg,#081126,#0b1220);padding:22px;border-radius:12px;border:1px solid rgba(255,255,255,0.03)}
+    body.light-mode .enroll {background: linear-gradient(180deg, #f3f4f6, #e5e7eb);}
+    .price{font-size:18px;font-weight:800}
+    .badge{display:inline-block;padding:6px 10px;border-radius:999px;background:rgba(124,92,255,0.12);color:var(--accent);font-weight:700;margin-bottom:8px}
+    .features-list{display:grid;gap:8px;margin-top:12px}
+    .feature-row{display:flex;gap:10px;align-items:center;color:var(--muted);font-size:14px}
+    .enroll button{width:100%;margin-top:12px}
+    #countdown {color: var(--accent-2); font-weight: bold;}
+
+    /* Courses grid */
+    .section{margin-top:28px}
+    .section h2{margin:0 0 12px}
+    .courses{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+    @media (max-width:1000px){.courses{grid-template-columns:repeat(2,1fr)}}
+    @media (max-width:640px){.courses{grid-template-columns:1fr}}
+    .course{background:linear-gradient(180deg, rgba(255,255,255,0.02), transparent);padding:14px;border-radius:12px;border:1px solid rgba(255,255,255,0.03);transition:transform .28s,box-shadow .28s}
+    body.light-mode .course {background: linear-gradient(180deg, rgba(0,0,0,0.02), transparent); border:1px solid rgba(0,0,0,0.03);}
+    .course:hover{transform:translateY(-8px);box-shadow:0 18px 40px rgba(15,20,34,0.6)}
+    .course img{width:100%;height:160px;object-fit:cover;border-radius:8px;transition: transform 0.3s;}
+    .course:hover img {transform: scale(1.05);}
+    .course h3{margin:10px 0 6px;font-size:16px}
+    .meta-row{display:flex;justify-content:space-between;align-items:center}
+    .price-tag{font-weight:700}
+    .enroll-btn{padding:8px 10px;border-radius:10px;border:0;background:linear-gradient(90deg,var(--accent),var(--accent-2));color:#021025;font-weight:700;cursor:pointer;transition: transform 0.2s;}
+    .enroll-btn:hover {transform: scale(1.05);}
+
+    /* Benefits */
+    .benefits{display:flex;gap:12px;margin-top:18px}
+    .benefit{flex:1;background:rgba(255,255,255,0.02);padding:16px;border-radius:12px;text-align:center;transition: transform 0.3s;}
+    body.light-mode .benefit {background: rgba(0,0,0,0.02);}
+    .benefit:hover {transform: translateY(-5px);}
+    .benefit svg{width:42px;height:42px}
+
+    /* Testimonial slider */
+    .testimonials{margin-top:20px;background:linear-gradient(180deg, rgba(255,255,255,0.01), transparent);padding:18px;border-radius:12px;border:1px solid rgba(255,255,255,0.03)}
+    body.light-mode .testimonials {background: linear-gradient(180deg, rgba(0,0,0,0.01), transparent); border:1px solid rgba(0,0,0,0.03);}
+    .slides{display:flex;gap:12px;overflow:hidden}
+    .slide{min-width:100%;transition:transform .4s ease}
+    .test-p{color:var(--muted)}
+
+    /* CTA Banner */
+    .cta-banner{margin-top:20px;padding:18px;border-radius:12px;background:linear-gradient(90deg,var(--accent),var(--accent-2));color:#021025;display:flex;justify-content:space-between;align-items:center;transition: box-shadow 0.3s;}
+    .cta-banner:hover {box-shadow: 0 0 20px rgba(124,92,255,0.5);}
+
+    /* Footer */
+    footer{margin-top:28px;color:var(--muted);font-size:14px;display:flex;justify-content:space-between}
+
+    /* small utilities */
+    .chip{display:inline-block;padding:6px 10px;border-radius:999px;background:#061323;color:var(--muted);font-size:13px}
+    body.light-mode .chip {background: #e5e7eb;}
+    .rating{color:#ffd86b;font-weight:700}
+
+    /* Animations */
+    .fade-up{opacity:0;transform:translateY(12px);transition:opacity .6s ease, transform .6s ease}
+    .fade-up.in{opacity:1;transform:none}
+    .pop{transform-origin:center center;transition:transform .24s}
+    .pop:hover{transform:scale(1.03)}
+
+    /* modal */
+    .modal{position:fixed;inset:0;display:grid;place-items:center;background:rgba(2,6,23,0.6);visibility:hidden;opacity:0;transition:opacity .2s,visibility .2s}
+    body.light-mode .modal {background: rgba(255,255,255,0.6);}
+    .modal.show{visibility:visible;opacity:1}
+    .modal-card{background:#071225;padding:20px;border-radius:12px;max-width:720px;width:92%;border:1px solid rgba(255,255,255,0.03)}
+    body.light-mode .modal-card {background: #ffffff; border:1px solid rgba(0,0,0,0.03); color: #1f2937;}
+
+    /* Toast Notification */
+    #toast {visibility: hidden; min-width: 250px; margin-left: -125px; background-color: var(--accent); color: #fff; text-align: center; border-radius: 8px; padding: 16px; position: fixed; z-index: 1000; left: 50%; bottom: 30px; font-size: 16px; box-shadow: 0 4px 8px rgba(0,0,0,0.2); transition: all 0.3s ease;}
+    #toast.show {visibility: visible; bottom: 50px; opacity: 1;}
+
+    /* small screens tweaks */
+    @media (max-width:480px){h1{font-size:24px}.logo{width:48px;height:48px}}
+  </style>
+</head>
+<body>
+
+<span class="loader"></span>
+  <div class="wrap">
+    <header>
+      <div class="brand">
+        <div class="logo">ED</div>
+        <div>
+          <div style="font-weight:800">EduLaunch</div>
+          <div style="color:var(--muted);font-size:13px">Vendez vos cours. Transformez des vies.</div>
+        </div>
+      </div>
+      <nav>
+        <a class="nav-link" href="#courses">Cours</a>
+        <a class="nav-link" href="#features">Avantages</a>
+        <a class="nav-link" href="#testimonials">Témoignages</a>
+        <button class="cta" id="joinTop">Commencer</button>
+      </nav>
+    </header>
+
+    <main>
+      <section class="hero" id="hero">
+        <div id="particles-js"></div>
+        <div class="hero-card fade-up" id="heroCard">
+          <div class="kicker">Plateforme d'apprentissage</div>
+          <h1>Apprenez <span class="typed" id="typed">à votre rythme</span> — <br>Créez, publiez et vendez vos cours.</h1>
+          <p class="lead">Un modèle optimisé pour la conversion : pages de vente claires, CTA puissants, et expérience utilisateur fluide pour convertir visiteurs en étudiants payants.</p>
+
+          <div class="hero-cta">
+            <button class="cta" id="explore">Explorer les cours</button>
+            <button class="nav-link" id="previewDemo">Voir un aperçu</button>
+          </div>
+
+          <div style="margin-top:18px;display:flex;gap:10px;flex-wrap:wrap">
+            <div class="chip">+10000 étudiants</div>
+            <div class="chip">Certificat officiel</div>
+            <div class="chip">Garantie 30 jours</div>
+          </div>
+        </div>
+
+        <aside class="right-hero">
+          <div class="enroll fade-up" id="enrollBox" style="position:relative;z-index:2">
+            <div class="badge">Offre de lancement</div>
+            <div style="display:flex;justify-content:space-between;align-items:center">
+              <div>
+                <div style="color:var(--muted);font-size:13px">Pack Pro</div>
+                <div class="price">199<span style="font-size:12px;font-weight:600">€ / an</span></div>
+              </div>
+              <div style="text-align:right;color:var(--muted);font-size:12px">Économisez 40%</div>
+            </div>
+            <div style="margin:8px 0; color:var(--muted);">Offre expire dans: <span id="countdown"></span></div>
+
+            <div class="features-list">
+              <div class="feature-row"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M5 12l4 4L19 6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg> Accès illimité aux cours</div>
+              <div class="feature-row"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 6v6l4 2" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg> Mise à jour continue</div>
+              <div class="feature-row"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 20c4.418 0 8-1.79 8-4v-4c0-2.21-3.582-4-8-4s-8 1.79-8 4v4c0 2.21 3.582 4 8 4z" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg> Support premium</div>
+            </div>
+
+            <button class="enroll-btn" id="buyNow">S'abonner</button>
+            <div style="color:var(--muted);font-size:13px;margin-top:8px">Paiement sécurisé • Annulation à tout moment</div>
+          </div>
+        </aside>
+
+        <div class="parallax-blob" aria-hidden></div>
+      </section>
+
+      <section class="section" id="courses">
+        <h2>Nos cours populaires</h2>
+        <div class="courses" id="coursesGrid">
+          <article class="course fade-up pop">
+            <img src="https://images.unsplash.com/photo-1523050854058-8df90110c9f1?q=80&w=800&auto=format&fit=crop" alt="Marketing Digital">
+            <h3>Marketing Digital: De zéro à pro</h3>
+            <div class="meta-row">
+              <div class="rating">★ 4.8</div>
+              <div class="price-tag">59€</div>
+            </div>
+            <div style="margin-top:10px;display:flex;justify-content:space-between;align-items:center">
+              <div style="color:var(--muted);font-size:13px">12h • 24 leçons</div>
+              <button class="enroll-btn small" onclick="openModal('Marketing Digital: De zéro à pro',59)">Voir</button>
+            </div>
+          </article>
+
+          <article class="course fade-up pop">
+            <img src="https://images.unsplash.com/photo-1559028012-481c04fa702d?q=80&w=800&auto=format&fit=crop" alt="Python">
+            <h3>Python pour les débutants</h3>
+            <div class="meta-row">
+              <div class="rating">★ 4.9</div>
+              <div class="price-tag">49€</div>
+            </div>
+            <div style="margin-top:10px;display:flex;justify-content:space-between;align-items:center">
+              <div style="color:var(--muted);font-size:13px">8h • 16 leçons</div>
+              <button class="enroll-btn small" onclick="openModal('Python pour les débutants',49)">Voir</button>
+            </div>
+          </article>
+
+          <article class="course fade-up pop">
+            <img src="https://images.unsplash.com/photo-1503676260728-1c00da094a0b?q=80&w=800&auto=format&fit=crop" alt="UI/UX Design">
+            <h3>Design UI/UX: Maîtrisez Figma</h3>
+            <div class="meta-row">
+              <div class="rating">★ 4.7</div>
+              <div class="price-tag">69€</div>
+            </div>
+            <div style="margin-top:10px;display:flex;justify-content:space-between;align-items:center">
+              <div style="color:var(--muted);font-size:13px">10h • 20 leçons</div>
+              <button class="enroll-btn small" onclick="openModal('Design UI/UX: Maîtrisez Figma',69)">Voir</button>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section class="section" id="features">
+        <h2>Pourquoi choisir EduLaunch?</h2>
+        <div class="benefits">
+          <div class="benefit fade-up">
+            <svg viewBox="0 0 24 24" fill="none"><path d="M12 4v16" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M6 8h12" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <h4>Ressources complètes</h4>
+            <p class="test-p">Guides, quiz, et certificats pour garder les étudiants engagés.</p>
+          </div>
+          <div class="benefit fade-up">
+            <svg viewBox="0 0 24 24" fill="none"><path d="M12 20v-8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M20 12a8 8 0 1 0-16 0" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <h4>Monétisation facile</h4>
+            <p class="test-p">Plans, promos et landing pages prêtes à vendre.</p>
+          </div>
+          <div class="benefit fade-up">
+            <svg viewBox="0 0 24 24" fill="none"><path d="M3 12h18" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 3v18" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <h4>Support & communauté</h4>
+            <p class="test-p">Forum, webinaires, et tuteurs pour booster la rétention.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="testimonials">
+        <h2>Témoignages</h2>
+        <div class="testimonials">
+          <div class="slides" id="slides">
+            <div class="slide">
+              <p style="font-weight:700">"Ce cours m'a aidé à décrocher un job en 3 mois!"</p>
+              <p class="test-p">— Leila, étudiante</p>
+            </div>
+            <div class="slide">
+              <p style="font-weight:700">"Interface claire, contenu applicable — je recommande."</p>
+              <p class="test-p">— Samir, freelance</p>
+            </div>
+            <div class="slide">
+              <p style="font-weight:700">"Bon rapport qualité/prix et support réactif."</p>
+              <p class="test-p">— Nadia, entrepreneure</p>
+            </div>
+          </div>
+          <div style="display:flex;gap:8px;margin-top:12px">
+            <button class="nav-link" id="prev">Préc</button>
+            <button class="nav-link" id="next">Suiv</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="cta-banner">
+          <div>
+            <div style="font-weight:800">Prêt à lancer votre cours ?</div>
+            <div style="color:var(--muted);font-size:14px">Créez une page de vente, importez des vidéos et commencez à vendre aujourd'hui.</div>
+          </div>
+          <div style="display:flex;gap:10px">
+            <button class="cta" onclick="document.getElementById('buyNow').scrollIntoView({behavior:'smooth'})">Commencer maintenant</button>
+            <button class="nav-link" onclick="openModal('Demo Pack',0)">Voir démo</button>
+          </div>
+        </div>
+      </section>
+
+      <footer>
+        <div>© 2025 EduLaunch — Tous droits réservés</div>
+        <div style="display:flex;gap:12px">
+          <a class="nav-link" href="#">Contact</a>
+          <a class="nav-link" href="#">Politique</a>
+        </div>
+      </footer>
+    </main>
+
+    <!-- Modal -->
+    <div class="modal" id="modal">
+      <div class="modal-card">
+        <button style="float:right;background:transparent;border:0;color:var(--muted);font-weight:700" onclick="closeModal()">X</button>
+        <div id="modalContent">
+          <!-- populated by JS -->
+        </div>
+      </div>
+    </div>
+
+    <!-- Toast -->
+    <div id="toast">Action réussie !</div>
+
+  </div>
+
+  <script>
+    // Typing effect
+    (function(){
+      const el = document.getElementById('typed');
+      const words = ['à votre rythme','avec des experts','en quelques semaines','et gagnez en compétences'];
+      let i=0, j=0, forward=true, cur='';
+      function tick(){
+        const w = words[i];
+        if(forward){ cur = w.slice(0, j+1); j++; if(j===w.length){ forward=false; setTimeout(tick,900); return; }} else { cur = w.slice(0, j-1); j--; if(j===0){ forward=true; i=(i+1)%words.length; }}
+        el.textContent = cur;
+        setTimeout(tick, forward?90:40);
+      }
+      tick();
+    })();
+
+    // Intersection observer for fade-up
+    const observer = new IntersectionObserver((entries)=>{
+      entries.forEach(e=>{ if(e.isIntersecting) e.target.classList.add('in'); });
+    },{threshold:0.12});
+    document.querySelectorAll('.fade-up').forEach(el=>observer.observe(el));
+
+    // Testimonials slider
+    let idx = 0; const slides = document.querySelectorAll('.slide');
+    function showSlide(n){ idx = (n + slides.length) % slides.length; const wrap = document.getElementById('slides'); wrap.style.transform = `translateX(${-idx*100}%)`; }
+    document.getElementById('prev').addEventListener('click', ()=>showSlide(idx-1));
+    document.getElementById('next').addEventListener('click', ()=>showSlide(idx+1));
+    setInterval(()=>showSlide(idx+1),6000);
+
+    // Modal flow
+    function openModal(title,price){
+      const content = document.getElementById('modalContent');
+      content.innerHTML = `<h3 style=\"margin-top:2px\">${title}</h3><p style=\"color:var(--muted)\">Prix: ${price?price+'€': 'Gratuit / Demo'}</p><p style=\"margin-top:8px\">Ce est un exemple de modal de vente. Intégrez Stripe/PayPal pour traiter les paiements.</p><div style=\"display:flex;gap:8px;margin-top:12px\"><button class=\"cta\" onclick=\"showToast('Inscription réussie !'); closeModal()\">Acheter</button><button class=\"nav-link\" onclick=\"closeModal()\">Fermer</button></div>`;
+      document.getElementById('modal').classList.add('show');
+    }
+    function closeModal(){ document.getElementById('modal').classList.remove('show'); }
+
+    // Enroll CTA
+    document.getElementById('joinTop').addEventListener('click', ()=>{ window.location.href='#courses'; });
+    document.getElementById('explore').addEventListener('click', ()=>{ window.location.href='#courses'; });
+    document.getElementById('previewDemo').addEventListener('click', ()=>openModal('Aperçu du site',0));
+    document.getElementById('buyNow').addEventListener('click', ()=>showToast('Abonnement activé !'));
+
+    // Progressive enhancement: lazy load images
+    document.querySelectorAll('img').forEach(img=>{ img.loading='lazy'; });
+
+    // Smooth scroll
+    if('scrollBehavior' in document.documentElement.style){ document.documentElement.style.scrollBehavior='smooth'; }
+
+    // Dark/Light Mode Toggle
+    document.getElementById('modeToggle').addEventListener('change', (e) => {
+      document.body.classList.toggle('light-mode', e.target.checked);
+    });
+
+    // Particles for creative effect
+    particlesJS('particles-js', {
+      particles: {
+        number: { value: 80, density: { enable: true, value_area: 800 } },
+        color: { value: ['#7c5cff', '#00d4ff'] },
+        shape: { type: 'circle' },
+        opacity: { value: 0.5, random: false },
+        size: { value: 3, random: true },
+        line_linked: { enable: true, distance: 150, color: '#ffffff', opacity: 0.4, width: 1 },
+        move: { enable: true, speed: 2, direction: 'none', random: false, straight: false, out_mode: 'out', bounce: false }
+      },
+      interactivity: {
+        detect_on: 'canvas',
+        events: { onhover: { enable: true, mode: 'repulse' }, onclick: { enable: true, mode: 'push' }, resize: true },
+        modes: { repulse: { distance: 100, duration: 0.4 }, push: { particles_nb: 4 } }
+      },
+      retina_detect: true
+    });
+
+    // Countdown Timer for urgency
+    const countDownDate = new Date().getTime() + (24 * 60 * 60 * 1000); // 24 hours from now
+    const countdownInterval = setInterval(() => {
+      const now = new Date().getTime();
+      const distance = countDownDate - now;
+      const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+      document.getElementById('countdown').innerHTML = `${hours}h ${minutes}m ${seconds}s`;
+      if (distance < 0) {
+        clearInterval(countdownInterval);
+        document.getElementById('countdown').innerHTML = 'Expirée';
+      }
+    }, 1000);
+
+    // Toast Notification
+    function showToast(message) {
+      const toast = document.getElementById('toast');
+      toast.innerHTML = message;
+      toast.classList.add('show');
+      setTimeout(() => { toast.classList.remove('show'); }, 3000);
+    }
+  </script>
+</body>
+</html>
