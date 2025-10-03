@@ -22,6 +22,10 @@
             --glass-bg: rgba(255, 255, 255, 0.05);
             --glass-border: rgba(255, 255, 255, 0.1);
             --shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            /* Scrollbar Variables */
+            --scrollbar-track: linear-gradient(180deg, var(--bg-primary), var(--bg-secondary));
+            --scrollbar-thumb: var(--accent-color);
+            --scrollbar-thumb-hover: var(--accent-hover);
         }
 
         [data-theme="light"] {
@@ -35,6 +39,9 @@
             --glass-bg: rgba(0, 0, 0, 0.05);
             --glass-border: rgba(0, 0, 0, 0.1);
             --shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            --scrollbar-track: linear-gradient(180deg, var(--bg-primary), var(--bg-secondary));
+            --scrollbar-thumb: var(--accent-color);
+            --scrollbar-thumb-hover: var(--accent-hover);
         }
 
         * {
@@ -51,6 +58,42 @@
             overflow-x: hidden;
             scroll-behavior: smooth;
             cursor: none;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 12px;
+            height: 12px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--scrollbar-track);
+            border-radius: 10px;
+            box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--scrollbar-thumb);
+            border-radius: 10px;
+            box-shadow: 0 0 10px var(--scrollbar-thumb), 0 0 20px var(--scrollbar-thumb);
+            border: 2px solid var(--bg-primary);
+            transition: background 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--scrollbar-thumb-hover);
+            box-shadow: 0 0 15px var(--scrollbar-thumb-hover), 0 0 30px var(--scrollbar-thumb-hover);
+        }
+
+        /* Scrollbar Animation */
+        @keyframes scrollbarGlow {
+            0% { box-shadow: 0 0 10px var(--scrollbar-thumb); }
+            50% { box-shadow: 0 0 20px var(--scrollbar-thumb), 0 0 30px var(--scrollbar-thumb); }
+            100% { box-shadow: 0 0 10px var(--scrollbar-thumb); }
+        }
+
+        ::-webkit-scrollbar-thumb:active {
+            animation: scrollbarGlow 1.5s ease-in-out infinite;
         }
 
         /* Loader */
@@ -491,6 +534,97 @@
             font-size: 0.9rem;
         }
 
+        /* Pricing Section */
+        #pricing {
+            background: var(--bg-primary);
+        }
+
+        #pricing .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .pricing-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 2rem;
+            text-align: center;
+            box-shadow: var(--shadow);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .pricing-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 12px 40px rgba(0, 255, 136, 0.2);
+        }
+
+        .pricing-card.popular::before {
+            content: 'Popular';
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: var(--accent-color);
+            color: var(--bg-primary);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .pricing-icon {
+            width: 60px;
+            height: 60px;
+            margin: 0 auto 1rem;
+            fill: var(--accent-color);
+            transition: transform 0.3s ease, fill 0.3s ease;
+        }
+
+        .pricing-card:hover .pricing-icon {
+            transform: scale(1.2) rotate(10deg);
+        }
+
+        .pricing-card h3 {
+            font-family: 'Orbitron', monospace;
+            font-size: 1.8rem;
+            color: var(--accent-color);
+            margin-bottom: 1rem;
+        }
+
+        .pricing-card .price {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+        }
+
+        .pricing-card .price span {
+            font-size: 1.2rem;
+            font-weight: 400;
+            color: var(--text-secondary);
+        }
+
+        .pricing-card ul {
+            list-style: none;
+            margin-bottom: 2rem;
+        }
+
+        .pricing-card ul li {
+            margin-bottom: 0.75rem;
+            font-size: 1rem;
+            color: var(--text-primary);
+        }
+
+        .pricing-card ul li::before {
+            content: '✔';
+            color: var(--accent-color);
+            margin-right: 0.5rem;
+        }
+
         /* Modal for Portfolio Details */
         .modal {
             display: none;
@@ -502,23 +636,99 @@
             height: 100%;
             background: rgba(0, 0, 0, 0.8);
             animation: fadeIn 0.3s ease;
+            align-items: center;
+            justify-content: center;
+            overflow-y: auto;
         }
 
         .modal-content {
             background: var(--bg-secondary);
             margin: 5% auto;
-            padding: 2rem;
-            border-radius: 15px;
-            width: 80%;
-            max-width: 600px;
+            padding: 0;
+            border-radius: 20px;
+            width: 90%;
+            max-width: 800px;
             position: relative;
+            box-shadow: var(--shadow);
+            overflow: hidden;
+        }
+
+        .modal-header {
+            position: relative;
+        }
+
+        .modal-header img {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+            filter: brightness(0.8);
+        }
+
+        .modal-header h3 {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            font-family: 'Orbitron', monospace;
+            font-size: 2.5rem;
+            color: var(--text-primary);
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        .modal-body {
+            padding: 2rem;
+        }
+
+        .modal-section {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+
+        .modal-section svg {
+            width: 24px;
+            height: 24px;
+            fill: var(--accent-color);
+            margin-right: 1rem;
+        }
+
+        .modal-section h4 {
+            font-size: 1.2rem;
+            color: var(--accent-color);
+            margin: 0;
+            flex: 0 0 120px;
+        }
+
+        .modal-section p {
+            margin: 0;
+            color: var(--text-primary);
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .social-links a {
+            color: var(--text-primary);
+            transition: color 0.3s ease;
+        }
+
+        .social-links a:hover {
+            color: var(--accent-color);
         }
 
         .close {
             color: var(--text-primary);
-            float: right;
+            position: absolute;
+            top: 10px;
+            right: 20px;
             font-size: 2rem;
             cursor: none;
+            z-index: 10;
         }
 
         @keyframes fadeIn {
@@ -600,7 +810,43 @@
                 font-size: 0.9rem;
                 padding: 0.8rem 1.2rem;
             }
+
+            .modal-content {
+                width: 95%;
+            }
+
+            .modal-header img {
+                height: 200px;
+            }
+
+            .modal-header h3 {
+                font-size: 2rem;
+            }
+
+            .modal-section h4 {
+                flex: 0 0 100px;
+            }
+
+            /* Adjust scrollbar for mobile */
+            ::-webkit-scrollbar {
+                width: 8px;
+                height: 8px;
+            }
+
+            .pricing-icon {
+                width: 40px;
+                height: 40px;
+            }
+
+            .pricing-card .price {
+                font-size: 2rem;
+            }
+
+            .pricing-card h3 {
+                font-size: 1.5rem;
+            }
         }
+
         .service-icon {
             width: 60px;
             height: 60px;
@@ -619,10 +865,628 @@
                 height: 40px;
             }
         }
+
         .nav-links .active {
             color: var(--accent-color);
             font-weight: 600;
         }
+    /* Base styles for cta-button */
+.cta-button {
+    background: var(--accent-color);
+    color: var(--bg-primary);
+    padding: clamp(0.8rem, 2.5vw, 1rem) clamp(1.5rem, 4vw, 2rem);
+    border: none;
+    border-radius: 50px;
+    font-size: clamp(1rem, 2.5vw, 1.1rem);
+    cursor: pointer;
+    transition: background 0.3s ease, transform 0.3s ease;
+    text-decoration: none;
+    display: inline-block;
+}
+
+.cta-button:hover {
+    background: var(--accent-hover);
+    transform: scale(1.05);
+}
+
+/* Hoverable class for general hover effects */
+.hoverable {
+    transition: opacity 0.3s ease;
+}
+
+.hoverable:hover {
+    opacity: 0.8;
+}
+
+/* Payment modal base styles */
+.payment-modal {
+    display: none;
+    position: fixed;
+    z-index: 2000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    animation: fadeIn 0.3s ease;
+    align-items: center;
+    justify-content: center;
+    overflow-y: auto;
+    padding: clamp(0.5rem, 2vw, 1rem);
+}
+
+/* Modal content with fluid width */
+.payment-modal-content {
+    max-width: clamp(400px, 90%, 600px);
+    width: 100%;
+    background: var(--glass-bg);
+    backdrop-filter: blur(10px);
+    border: 1px solid var(--glass-border);
+    padding: 0;
+    border-radius: 20px;
+    box-shadow: var(--shadow);
+    position: relative;
+}
+
+/* Modal header with flexible spacing */
+.payment-modal-header {
+    position: relative;
+    padding: 1rem 2rem;
+    border-bottom: 1px solid var(--glass-border);
+    display: flex;
+    justify-content: left;
+    align-items: center;
+}
+
+.payment-modal-header h3 {
+    font-family: 'Orbitron', monospace;
+    font-size: clamp(1.5rem, 4vw, 1.8rem);
+    color: var(--accent-color);
+    margin: 0;
+}
+
+.payment-modal-header .price {
+    position: absolute;
+    right: 2.5rem;  
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: clamp(1.2rem, 3.5vw, 1.5rem);
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.payment-modal-header .close {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    font-size: 1.6rem;
+    cursor: pointer;
+}
+
+
+/* Card form with responsive padding */
+.card-form {
+    max-width: 100%;
+    margin: auto;
+    font-family: 'Source Sans Pro', sans-serif;
+    font-size: clamp(12px, 2.5vw, 16px);
+}
+
+.card-form__inner {
+    background: var(--glass-bg);
+    backdrop-filter: blur(10px);
+    border-radius: 10px;
+    padding: clamp(1rem, 2.5vw, 2rem);
+    padding-top: clamp(120px, 35vw, 180px);
+    box-shadow: var(--shadow);
+}
+
+.card-form__row {
+    display: flex;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: clamp(0.5rem, 2vw, 1rem);
+}
+
+.card-form__col {
+    flex: 1;
+    min-width: clamp(100px, 30%, 150px);
+}
+
+.card-form__col.-cvv {
+    max-width: clamp(100px, 25%, 150px);
+}
+
+.card-form__button {
+    width: 100%;
+    height: clamp(45px, 10vw, 55px);
+    background: var(--accent-color);
+    border: none;
+    border-radius: 10px;
+    font-size: clamp(16px, 2.8vw, 20px);
+    font-weight: 500;
+    font-family: 'Source Sans Pro', sans-serif;
+    box-shadow: var(--shadow);
+    color: var(--bg-primary);
+    margin-top: clamp(15px, 3vw, 20px);
+    cursor: pointer;
+    transition: background 0.3s ease, transform 0.3s ease;
+}
+
+.card-form__button:hover {
+    background: var(--accent-hover);
+    transform: scale(1.05);
+}
+
+/* Card item with responsive dimensions */
+.card-item {
+    max-width: clamp(260px, 90%, 430px);
+    height: clamp(160px, 60vw, 270px);
+    margin: 0 auto;
+    position: relative;
+    z-index: 2;
+    width: 100%;
+}
+
+.card-item.-active .card-item__side.-front {
+    transform: perspective(1000px) rotateY(180deg);
+}
+
+.card-item.-active .card-item__side.-back {
+    transform: perspective(1000px) rotateY(0);
+}
+
+.card-item__focus {
+    position: absolute;
+    z-index: 3;
+    border-radius: 5px;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    transition: all 0.35s cubic-bezier(0.71, 0.03, 0.56, 0.85);
+    opacity: 0;
+    pointer-events: none;
+    border: 2px solid var(--accent-color);
+}
+
+.card-item__focus.-active {
+    opacity: 1;
+}
+
+.card-item__side {
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: var(--shadow);
+    transform: perspective(2000px) rotateY(0deg);
+    transition: all 0.8s cubic-bezier(0.71, 0.03, 0.56, 0.85);
+    backface-visibility: hidden;
+    height: 100%;
+}
+
+.card-item__side.-back {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    transform: perspective(2000px) rotateY(-180deg);
+    z-index: 2;
+}
+
+.card-item__bg {
+    max-width: 100%;
+    display: block;
+    max-height: 100%;
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+}
+
+.card-item__cover {
+    height: 100%;
+    background: var(--bg-secondary);
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    border-radius: 15px;
+    overflow: hidden;
+}
+
+.card-item__cover:after {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.45);
+}
+
+.card-item__top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-bottom: clamp(20px, 8vw, 40px);
+    padding: 0 clamp(8px, 2vw, 10px);
+}
+
+.card-item__type {
+    height: clamp(35px, 10vw, 45px);
+    position: relative;
+    display: flex;
+    justify-content: flex-end;
+    max-width: clamp(80px, 20vw, 100px);
+    margin-left: auto;
+}
+
+.card-item__typeImg {
+    max-width: 100%;
+    object-fit: contain;
+    max-height: 100%;
+}
+
+.card-item__info {
+    color: var(--text-primary);
+    width: 100%;
+    max-width: calc(100% - 85px);
+    padding: clamp(8px, 2vw, 15px);
+    font-weight: 500;
+    display: block;
+}
+
+.card-item__holder {
+    opacity: 0.7;
+    font-size: clamp(11px, 2vw, 13px);
+    margin-bottom: clamp(4px, 1.5vw, 6px);
+}
+
+.card-item__wrapper {
+    font-family: 'Source Code Pro', monospace;
+    padding: clamp(15px, 5vw, 25px) clamp(10px, 3vw, 15px);
+    position: relative;
+    z-index: 4;
+    height: 100%;
+    text-shadow: 7px 6px 10px rgba(0, 0, 0, 0.8);
+    user-select: none;
+}
+
+.card-item__name {
+    font-size: clamp(14px, 4vw, 18px);
+    line-height: 1;
+    white-space: nowrap;
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-transform: uppercase;
+}
+
+.card-item__number {
+    font-weight: 500;
+    line-height: 1;
+    color: var(--text-primary);
+    font-size: clamp(18px, 5vw, 27px);
+    margin-bottom: clamp(20px, 6vw, 35px);
+    display: inline-block;
+    padding: clamp(8px, 2.5vw, 15px);
+}
+
+.card-item__numberItem {
+    width: clamp(12px, 3vw, 16px);
+    display: inline-block;
+}
+
+.card-item__numberItem.-active {
+    width: clamp(16px, 4vw, 30px);
+}
+
+.card-item__content {
+    color: var(--text-primary);
+    display: flex;
+    align-items: flex-start;
+}
+
+.card-item__date {
+    flex-wrap: wrap;
+    font-size: clamp(14px, 3.5vw, 18px);
+    margin-left: auto;
+    padding: clamp(8px, 2vw, 10px);
+    display: inline-flex;
+    width: clamp(50px, 15vw, 80px);
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+.card-item__dateItem {
+    position: relative;
+}
+
+.card-item__dateTitle {
+    opacity: 0.7;
+    font-size: clamp(11px, 2vw, 13px);
+    padding-bottom: clamp(4px, 1.5vw, 6px);
+    width: 100%;
+}
+
+.card-item__band {
+    background: rgba(0, 0, 19, 0.8);
+    width: 100%;
+    height: clamp(40px, 10vw, 50px);
+    margin-top: clamp(20px, 5vw, 30px);
+    position: relative;
+    z-index: 2;
+}
+
+.card-item__cvv {
+    text-align: right;
+    position: relative;
+    z-index: 2;
+    padding: clamp(10px, 3vw, 15px);
+}
+
+.card-item__cvvTitle {
+    padding-right: 10px;
+    font-size: clamp(13px, 2.5vw, 15px);
+    font-weight: 500;
+    color: var(--text-primary);
+    margin-bottom: clamp(4px, 1.5vw, 5px);
+}
+
+.card-item__cvvBand {
+    height: clamp(35px, 10vw, 45px);
+    background: var(--bg-accent);
+    margin-bottom: clamp(20px, 5vw, 30px);
+    text-align: right;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding-right: clamp(8px, 2vw, 10px);
+    color: var(--text-primary);
+    font-size: clamp(14px, 3.5vw, 18px);
+    border-radius: 4px;
+    box-shadow: var(--shadow);
+}
+
+.card-list {
+    margin-bottom: clamp(-140px, -30vw, -100px);
+}
+
+.card-input {
+    margin-bottom: clamp(15px, 3vw, 20px);
+}
+
+.card-input__label {
+    font-size: clamp(12px, 2.5vw, 14px);
+    margin-bottom: clamp(4px, 1.5vw, 5px);
+    font-weight: 500;
+    color: var(--text-primary);
+    width: 100%;
+    display: block;
+}
+
+.card-input__input {
+    width: 100%;
+    height: clamp(40px, 8vw, 50px);
+    border-radius: 10px;
+    border: 1px solid var(--glass-border);
+    transition: all 0.3s ease-in-out;
+    font-size: clamp(14px, 2.5vw, 18px);
+    padding: clamp(4px, 1.5vw, 15px);
+    background: var(--bg-accent);
+    color: var(--text-primary);
+    font-family: 'Source Sans Pro', sans-serif;
+}
+
+.card-input__input:hover,
+.card-input__input:focus {
+    border-color: var(--accent-color);
+    box-shadow: var(--shadow);
+}
+
+.card-input__input.-select {
+    -webkit-appearance: none;
+    background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAeCAYAAABuUU38AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAUxJREFUeNrM1sEJwkAQBdCsngXPHsQO9O5FS7AAMVYgdqAd2IGCDWgFnryLFQiCZ8EGnJUNimiyM/tnk4HNEAg/8y6ZmMRVqz9eUJvRaSbvutCZ347bXVJy/ZnvTmdJ862Me+hAbZCTs6GHpyUi1tTSvPnqTpoWZPUa7W7ncT3vK4h4zVejy8QzM3WhVUO8ykI6jOxoGA4ig3BLHcNFSCGqGAkig2yqgpEiMsjSfY9LxYQg7L6r0X6wS29YJiYQYecemY+wHrXD1+bklGhpAhBDeu/JfIVGxaAQ9sb8CI+CQSJ+QmJg0Ii/EE2MBiIXooHRQhRCkBhNhBcEhLkwf05ZCG8ICCOpk0MULmvDSY2M8UawIRExLIQIEgHDRoghihgRIgiigBEjgiFATBACAgFgghEwSAAGgoBCBBgYAg5hYKAIFYgHBo6w9RRgAFfy160QuV8NAAAAAElFTkSuQmCC");
+    background-size: clamp(10px, 2.5vw, 12px);
+    background-position: 90% center;
+    background-repeat: no-repeat;
+    padding-right: clamp(20px, 5vw, 30px);
+}
+
+/* Animation classes */
+.slide-fade-up-enter-active {
+    transition: all 0.25s ease-in-out;
+    transition-delay: 0.1s;
+    position: relative;
+}
+
+.slide-fade-up-leave-active {
+    transition: all 0.25s ease-in-out;
+    position: absolute;
+}
+
+.slide-fade-up-enter {
+    opacity: 0;
+    transform: translateY(15px);
+    pointer-events: none;
+}
+
+.slide-fade-up-leave-to {
+    opacity: 0;
+    transform: translateY(-15px);
+    pointer-events: none;
+}
+
+.slide-fade-right-enter-active {
+    transition: all 0.25s ease-in-out;
+    transition-delay: 0.1s;
+    position: relative;
+}
+
+.slide-fade-right-leave-active {
+    transition: all 0.25s ease-in-out;
+    position: absolute;
+}
+
+.slide-fade-right-enter {
+    opacity: 0;
+    transform: translateX(10px) rotate(45deg);
+    pointer-events: none;
+}
+
+.slide-fade-right-leave-to {
+    opacity: 0;
+    transform: translateX(-10px) rotate(45deg);
+    pointer-events: none;
+}
+
+.close {
+    color: var(--text-primary);
+    position: absolute;
+    top: clamp(8px, 2vw, 10px);
+    right: clamp(15px, 3vw, 20px);
+    font-size: clamp(1.5rem, 4vw, 2rem);
+    cursor: pointer;
+    z-index: 10;
+}
+
+/* Responsive adjustments */
+@media (max-width: 1024px) {
+    .payment-modal-content {
+        max-width: 80%;
+    }
+    .card-form__inner {
+        padding-top: clamp(100px, 30vw, 150px);
+    }
+    .card-item {
+        max-width: clamp(300px, 80%, 380px);
+        height: clamp(180px, 50vw, 240px);
+    }
+}
+
+@media (max-width: 768px) {
+    .payment-modal-content {
+        max-width: 90%;
+    }
+    .card-form__inner {
+        padding: clamp(1rem, 2vw, 1.5rem);
+        padding-top: clamp(90px, 28vw, 140px);
+    }
+    .card-item {
+        max-width: clamp(280px, 85%, 350px);
+        height: clamp(160px, 45vw, 220px);
+    }
+    .card-item__number {
+        font-size: clamp(16px, 4vw, 22px);
+        margin-bottom: clamp(15px, 4vw, 20px);
+    }
+    .card-item__name {
+        font-size: clamp(12px, 3.5vw, 16px);
+    }
+    .card-item__date {
+        font-size: clamp(12px, 3vw, 16px);
+        width: clamp(50px, 15vw, 70px);
+    }
+    .card-list {
+        margin-bottom: clamp(-120px, -28vw, -90px);
+    }
+}
+
+@media (max-width: 480px) {
+    .payment-modal-content {
+        max-width: 95%;
+    }
+    .card-form__inner {
+        padding: clamp(0.8rem, 2vw, 1rem);
+        padding-top: clamp(80px, 25vw, 130px);
+    }
+    .card-form__col {
+        min-width: 100%;
+    }
+    .card-form__col.-cvv {
+        max-width: 100%;
+    }
+    .card-item {
+        max-width: clamp(240px, 90%, 300px);
+        height: clamp(140px, 40vw, 180px);
+    }
+    .card-item__number {
+        font-size: clamp(14px, 3.5vw, 18px);
+        margin-bottom: clamp(10px, 3vw, 15px);
+        padding: clamp(6px, 2vw, 8px);
+    }
+    .card-item__numberItem {
+        width: clamp(10px, 2.5vw, 12px);
+    }
+    .card-item__numberItem.-active {
+        width: clamp(14px, 3.5vw, 16px);
+    }
+    .card-item__name {
+        font-size: clamp(11px, 3vw, 14px);
+    }
+    .card-item__date {
+        font-size: clamp(11px, 3vw, 14px);
+        width: clamp(40px, 12vw, 60px);
+    }
+    .card-item__cvvBand {
+        height: clamp(30px, 8vw, 40px);
+        margin-bottom: clamp(15px, 4vw, 20px);
+    }
+    .card-list {
+        margin-bottom: clamp(-110px, -25vw, -80px);
+    }
+}
+
+@media (max-width: 360px) {
+    .payment-modal-content {
+        max-width: 98%;
+    }
+    .card-form__inner {
+        padding: clamp(0.6rem, 1.5vw, 0.8rem);
+        padding-top: clamp(70px, 22vw, 120px);
+    }
+    .card-item {
+        max-width: clamp(220px, 90%, 260px);
+        height: clamp(120px, 35vw, 160px);
+    }
+    .card-item__number {
+        font-size: clamp(12px, 3vw, 16px);
+        margin-bottom: clamp(8px, 2.5vw, 10px);
+        padding: clamp(4px, 1.5vw, 6px);
+    }
+    .card-item__name {
+        font-size: clamp(10px, 2.5vw, 12px);
+    }
+    .card-item__date {
+        font-size: clamp(10px, 2.5vw, 12px);
+        width: clamp(35px, 10vw, 50px);
+    }
+    .card-item__cvvBand {
+        height: clamp(25px, 7vw, 35px);
+        margin-bottom: clamp(10px, 3vw, 15px);
+    }
+    .card-list {
+        margin-bottom: clamp(-100px, -22vw, -70px);
+    }
+}
+
+/* High-resolution screens (e.g., Retina) */
+@media (min-resolution: 192dpi) {
+    .card-item__bg,
+    .card-item__typeImg {
+        image-rendering: crisp-edges;
+    }
+}
+
+/* Large screens (e.g., desktops) */
+@media (min-width: 1200px) {
+    .payment-modal-content {
+        max-width: clamp(600px, 50%, 800px);
+    }
+    .card-item {
+        max-width: clamp(400px, 80%, 500px);
+        height: clamp(250px, 40vw, 300px);
+    }
+}
     </style>
     </head>
     <body data-theme="dark">
@@ -653,9 +1517,8 @@
                             class="hoverable">Portfolio</a></li>
                     <li><a href="#testimonials"
                             class="hoverable">Testimonials</a></li>
+                    <li><a href="#pricing" class="hoverable">Pricing</a></li>
                     <li><a href="#contact" class="hoverable">Contact</a></li>
-                    <li><a href="privacy-policy.html" class="hoverable">Privacy
-                            Policy</a></li>
                     <li><a href="404.html" class="hoverable">404</a></li>
                 </ul>
                 <button class="theme-toggle" onclick="toggleTheme()"
@@ -739,7 +1602,16 @@
             <h2>Featured Projects</h2>
             <div class="portfolio-grid">
                 <div class="portfolio-item hoverable"
-                    onclick="openModal('Project 1: AI Chatbot Revolution – Pioneered an intelligent chatbot that redefined digital conversations. Enhanced personalization, boosted customer satisfaction, and drove engagement up by 300%, setting a new benchmark in user experience innovation.')">
+                    onclick="openModal({
+                        title: 'AI Chatbot Revolution',
+                        image: 'img/ai_chatbot.jpeg',
+                        description: 'Pioneered an intelligent chatbot that redefined digital conversations. Enhanced personalization, boosted customer satisfaction, and drove engagement up by 300%, setting a new benchmark in user experience innovation.',
+                        client: 'TechCorp',
+                        service: 'AI Development',
+                        date: 'January 2024',
+                        duration: '6 months',
+                        goal: 'To enhance customer engagement and satisfaction through personalized AI interactions.'
+                    })">
                     <img src="img/ai_chatbot.jpeg" alt="AI Chatbot Project">
                     <div class="portfolio-overlay">
                         <h3>AI Chatbot</h3>
@@ -747,7 +1619,16 @@
                     </div>
                 </div>
                 <div class="portfolio-item hoverable"
-                    onclick="openModal('Project 2: Predictive Analytics Suite - Forecasted market trends with 95% accuracy.')">
+                    onclick="openModal({
+                        title: 'Predictive Analytics Suite',
+                        image: 'img/Predictive_Analytics.jpeg',
+                        description: 'Forecasted market trends with 95% accuracy, empowering businesses with data-driven insights.',
+                        client: 'DataDrive Inc.',
+                        service: 'Machine Learning',
+                        date: 'May 2024',
+                        duration: '4 months',
+                        goal: 'To provide accurate market trend predictions for informed decision-making.'
+                    })">
                     <img src="img/Predictive_Analytics.jpeg"
                         alt="Analytics Project">
                     <div class="portfolio-overlay">
@@ -756,7 +1637,16 @@
                     </div>
                 </div>
                 <div class="portfolio-item hoverable"
-                    onclick="openModal('Project 3: Sustainable AI Infrastructure - Zero-emission cloud for global scale.')">
+                    onclick="openModal({
+                        title: 'Sustainable AI Infrastructure',
+                        image: 'img/Sustainable_AI_Infrastructure.jpeg',
+                        description: 'Built zero-emission cloud infrastructure for global scale, promoting green technology.',
+                        client: 'EcoTech Solutions',
+                        service: 'Consulting & AI Development',
+                        date: 'September 2024',
+                        duration: '8 months',
+                        goal: 'To create scalable AI solutions with minimal environmental impact.'
+                    })">
                     <img src="img/Sustainable_AI_Infrastructure.jpeg"
                         alt="Sustainable AI Project">
                     <div class="portfolio-overlay">
@@ -809,6 +1699,74 @@
             </div>
         </section>
 
+        <section id="pricing">
+            <h2>Our Pricing Plans</h2>
+            <div class="pricing-grid">
+                <div class="pricing-card hoverable">
+                    <svg class="pricing-icon" xmlns="http://www.w3.org/2000/svg"
+                        width="24" height="24" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round"><path
+                            d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline
+                            points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line
+                            x1="12" y1="22.08" x2="12" y2="12"></line></svg>
+                    <h3>Basic</h3>
+                    <div class="price">$499<span>/month</span></div>
+                    <ul>
+                        <li>Custom AI Chatbot</li>
+                        <li>Basic Analytics Dashboard</li>
+                        <li>5GB Cloud Storage</li>
+                        <li>Email Support</li>
+                        <li>24/7 Dedicated Support</li>
+                    </ul>
+                    <button class="cta-button hoverable"
+                        onclick="openPaymentModal('Basic', '$499/month')">Get
+                        Started</button>
+                </div>
+                <div class="pricing-card popular hoverable">
+                    <svg class="pricing-icon" xmlns="http://www.w3.org/2000/svg"
+                        width="24" height="24" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round"><path
+                            d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+                    <h3>Pro</h3>
+                    <div class="price">$999<span>/month</span></div>
+                    <ul>
+                        <li>Advanced AI Models</li>
+                        <li>Predictive Analytics Suite</li>
+                        <li>20GB Cloud Storage</li>
+                        <li>Priority Email & Chat Support</li>
+                        <li>24/7 Dedicated Support</li>
+                    </ul>
+                    <button class="cta-button hoverable"
+                        onclick="openPaymentModal('Pro', '$999/month')">Get
+                        Started</button>
+                </div>
+                <div class="pricing-card hoverable">
+                    <svg class="pricing-icon" xmlns="http://www.w3.org/2000/svg"
+                        width="24" height="24" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round"><path
+                            d="M12 2v6l3 3"></path><path
+                            d="M22 12h-6l-3 3"></path><path
+                            d="M2 12h6l3-3"></path><path
+                            d="M12 22v-6l-3-3"></path><circle cx="12" cy="12"
+                            r="10"></circle></svg>
+                    <h3>Enterprise</h3>
+                    <div class="price">Custom<span>/month</span></div>
+                    <ul>
+                        <li>Fully Custom AI Solutions</li>
+                        <li>Full Analytics Suite</li>
+                        <li>Unlimited Cloud Storage</li>
+                        <li>24/7 Dedicated Support</li>
+                        <li>Quarterly Consulting</li>
+                    </ul>
+                    <a href="#contact" class="cta-button hoverable">Contact
+                        Us</a>
+                </div>
+            </div>
+        </section>
+
         <section id="contact">
             <h2>Get In Touch</h2>
             <form class="glass-card">
@@ -823,8 +1781,8 @@
 
         <footer>
             <p>&copy; 2025 NovaTech. All rights reserved. | <a
-                    href="privacy-policy.html" class="hoverable">Privacy
-                    Policy</a></p>
+                    href="privacy-policy.html" class="hoverable active"
+                    style="color: var(--accent-color);">Privacy Policy</a></p>
         </footer>
 
         <!-- Modal -->
@@ -832,13 +1790,368 @@
             <div class="modal-content">
                 <span class="close hoverable"
                     onclick="closeModal()">&times;</span>
-                <p id="modal-text"></p>
+                <div class="modal-header">
+                    <img id="modal-image" src alt="Project Image">
+                    <h3 id="modal-title"></h3>
+                </div>
+                <div class="modal-body">
+                    <p id="modal-description"></p>
+                    <div class="modal-section" id="modal-client">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24"
+                            height="24" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round"><path
+                                d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle
+                                cx="12" cy="7" r="4"></circle></svg>
+                        <h4>Client:</h4>
+                        <p></p>
+                    </div>
+                    <div class="modal-section" id="modal-service">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24"
+                            height="24" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round"><path
+                                d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline
+                                points="14 2 14 8 20 8"></polyline><line x1="16"
+                                y1="13" x2="8" y2="13"></line><line x1="16"
+                                y1="17" x2="8" y2="17"></line><polyline
+                                points="10 9 9 9 8 9"></polyline></svg>
+                        <h4>Service:</h4>
+                        <p></p>
+                    </div>
+                    <div class="modal-section" id="modal-date">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24"
+                            height="24" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round"><rect
+                                x="3" y="4" width="18" height="18" rx="2"
+                                ry="2"></rect><line x1="16" y1="2" x2="16"
+                                y2="6"></line><line x1="8" y1="2" x2="8"
+                                y2="6"></line><line x1="3" y1="10" x2="21"
+                                y2="10"></line></svg>
+                        <h4>Date:</h4>
+                        <p></p>
+                    </div>
+                    <div class="modal-section" id="modal-duration">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24"
+                            height="24" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"><circle cx="12" cy="12"
+                                r="10"></circle><polyline
+                                points="12 6 12 12 15 15"></polyline></svg>
+                        <h4>Duration:</h4>
+                        <p></p>
+                    </div>
+                    <div class="modal-section" id="modal-goal">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24"
+                            height="24" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round"><path
+                                d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"></path><polyline
+                                points="16 6 12 2 8 6"></polyline><line x1="12"
+                                y1="10" x2="12" y2="18"></line></svg>
+                        <h4>Goal:</h4>
+                        <p></p>
+                    </div>
+                    <div class="modal-section" id="modal-follow">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24"
+                            height="24" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round"><path
+                                d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path></svg>
+                        <h4>Follow Us:</h4>
+                        <div class="social-links">
+                            <a href="https://twitter.com/NovaTechAI"
+                                target="_blank"><svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    width="24" height="24" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor"
+                                    stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round"><path
+                                        d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path></svg></a>
+                            <a href="https://linkedin.com/company/NovaTech"
+                                target="_blank"><svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    width="24" height="24" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor"
+                                    stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round"><path
+                                        d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect
+                                        x="2" y="9" width="4"
+                                        height="12"></rect><circle cx="4" cy="4"
+                                        r="2"></circle></svg></a>
+                            <a href="https://instagram.com/NovaTechAI"
+                                target="_blank"><svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    width="24" height="24" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor"
+                                    stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round"><rect x="2" y="2"
+                                        width="20" height="20" rx="5"
+                                        ry="5"></rect><path
+                                        d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line
+                                        x1="17.5" y1="6.5" x2="17.51"
+                                        y2="6.5"></line></svg></a>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
+        <!-- Payment Modal -->
+        <div id="payment-modal" class="payment-modal">
+            <div class="payment-modal-content">
+                <span class="close hoverable"
+                    onclick="closePaymentModal()">&times;</span>
+                <div class="payment-modal-header">
+                    <h3 id="payment-plan-title"></h3>
+                    <div id="payment-plan-price" class="price"></div>
+                </div>
+                <div class="wrapper" id="app">
+                    <div class="card-form">
+                        <div class="card-list">
+                            <div class="card-item"
+                                v-bind:class="{ '-active' : isCardFlipped }">
+                                <div class="card-item__side -front">
+                                    <div class="card-item__focus"
+                                        v-bind:class="{'-active' : focusElementStyle }"
+                                        v-bind:style="focusElementStyle"
+                                        ref="focusElement"></div>
+                                    <div class="card-item__cover"><img
+                                            src="https://assets.bwbx.io/images/users/iqjWHBFdfxIU/i98YsJ0Nxn1U/v0/-1x-1.jpg"
+                                            class="card-item__bg"></div>
+                                    <div class="card-item__wrapper">
+                                        <div class="card-item__top">
+                                            <div class="card-item__type">
+                                                <transition
+                                                    name="slide-fade-up">
+                                                    <img
+                                                        v-bind:src="'https://raw.githubusercontent.com/muhammederdem/credit-card-form/master/src/assets/images/' + getCardType + '.png'"
+                                                        v-if="getCardType"
+                                                        v-bind:key="getCardType"
+                                                        alt
+                                                        class="card-item__typeImg">
+                                                </transition>
+                                            </div>
+                                        </div>
+                                        <label for="cardNumber"
+                                            class="card-item__number"
+                                            ref="cardNumber">
+                                            <template
+                                                v-if="getCardType === 'amex'">
+                                                <span
+                                                    v-for="(n, $index) in amexCardMask"
+                                                    :key="$index">
+                                                    <transition
+                                                        name="slide-fade-up">
+                                                        <div
+                                                            class="card-item__numberItem"
+                                                            v-if="$index > 4 && $index < 14 && cardNumber.length > $index && n.trim() !== ''">*</div>
+                                                        <div
+                                                            class="card-item__numberItem"
+                                                            :class="{ '-active' : n.trim() === '' }"
+                                                            :key="$index"
+                                                            v-else-if="cardNumber.length > $index">{{cardNumber[$index]}}</div>
+                                                        <div
+                                                            class="card-item__numberItem"
+                                                            :class="{ '-active' : n.trim() === '' }"
+                                                            v-else
+                                                            :key="$index + 1">{{n}}</div>
+                                                    </transition>
+                                                </span>
+                                            </template>
+                                            <template v-else>
+                                                <span
+                                                    v-for="(n, $index) in otherCardMask"
+                                                    :key="$index">
+                                                    <transition
+                                                        name="slide-fade-up">
+                                                        <div
+                                                            class="card-item__numberItem"
+                                                            v-if="$index > 4 && $index < 15 && cardNumber.length > $index && n.trim() !== ''">*</div>
+                                                        <div
+                                                            class="card-item__numberItem"
+                                                            :class="{ '-active' : n.trim() === '' }"
+                                                            :key="$index"
+                                                            v-else-if="cardNumber.length > $index">{{cardNumber[$index]}}</div>
+                                                        <div
+                                                            class="card-item__numberItem"
+                                                            :class="{ '-active' : n.trim() === '' }"
+                                                            v-else
+                                                            :key="$index + 1">{{n}}</div>
+                                                    </transition>
+                                                </span>
+                                            </template>
+                                        </label>
+                                        <div class="card-item__content">
+                                            <label for="cardName"
+                                                class="card-item__info"
+                                                ref="cardName">
+                                                <div
+                                                    class="card-item__holder">Card
+                                                    Holder</div>
+                                                <transition
+                                                    name="slide-fade-up">
+                                                    <div class="card-item__name"
+                                                        v-if="cardName.length"
+                                                        key="1">
+                                                        <transition-group
+                                                            name="slide-fade-right">
+                                                            <span
+                                                                class="card-item__nameItem"
+                                                                v-for="(n, $index) in cardName.replace(/\s\s+/g, ' ')"
+                                                                :key="$index + 1">{{n}}</span>
+                                                        </transition-group>
+                                                    </div>
+                                                    <div class="card-item__name"
+                                                        v-else key="2">Full
+                                                        Name</div>
+                                                </transition>
+                                            </label>
+                                            <div class="card-item__date"
+                                                ref="cardDate">
+                                                <label for="cardMonth"
+                                                    class="card-item__dateTitle">Expires</label>
+                                                <label for="cardMonth"
+                                                    class="card-item__dateItem">
+                                                    <transition
+                                                        name="slide-fade-up">
+                                                        <span
+                                                            v-if="cardMonth">{{cardMonth}}</span>
+                                                        <span v-else>MM</span>
+                                                    </transition>
+                                                </label>
+                                                /
+                                                <label for="cardYear"
+                                                    class="card-item__dateItem">
+                                                    <transition
+                                                        name="slide-fade-up">
+                                                        <span
+                                                            v-if="cardYear">{{cardYearShort}}</span>
+                                                        <span v-else>YY</span>
 
+                                                    </transition>
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-item__side -back">
+                                    <div class="card-item__cover"><img
+                                            src="https://assets.bwbx.io/images/users/iqjWHBFdfxIU/i98YsJ0Nxn1U/v0/-1x-1.jpg"
+                                            class="card-item__bg"></div>
+                                    <div class="card-item__band"></div>
+                                    <div class="card-item__cvv">
+                                        <div
+                                            class="card-item__cvvTitle">CVV</div>
+                                        <div class="card-item__cvvBand">
+                                            <transition-group
+                                                name="slide-fade-up" tag="div">
+                                                <span
+                                                    v-for="(n, $index) in cardCvv"
+                                                    :key="$index">{{n}}</span>
+                                            </transition-group>
+                                        </div>
+                                        <div class="card-item__type">
+                                            <img
+                                                v-bind:src="'https://raw.githubusercontent.com/muhammederdem/credit-card-form/master/src/assets/images/' + getCardType + '.png'"
+                                                v-if="getCardType"
+                                                class="card-item__typeImg">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-form__inner">
+                            <div class="card-input">
+                                <label for="cardNumber"
+                                    class="card-input__label">Card
+                                    Number</label>
+                                <input type="text" id="cardNumber"
+                                    class="card-input__input"
+                                    v-model="cardNumber"
+                                    v-mask="generateCardNumberMask"
+                                    maxlength="19" data-card-field
+                                    autocomplete="off" @focus="focusInput"
+                                    @blur="blurInput">
+                            </div>
+                            <div class="card-input">
+                                <label for="cardName"
+                                    class="card-input__label">Card
+                                    Holder</label>
+                                <input type="text" id="cardName"
+                                    class="card-input__input" v-model="cardName"
+                                    data-card-field autocomplete="off"
+                                    @focus="focusInput" @blur="blurInput">
+                            </div>
+                            <div class="card-form__row">
+                                <div class="card-form__col">
+                                    <div class="card-input">
+                                        <label for="cardMonth"
+                                            class="card-input__label">Expiration
+                                            Date</label>
+                                        <select
+                                            class="card-input__input -select"
+                                            id="cardMonth" v-model="cardMonth"
+                                            data-card-field @focus="focusInput"
+                                            @blur="blurInput">
+                                            <option value disabled
+                                                selected>Month</option>
+                                            <option
+                                                v-bind:value="n < 10 ? '0' + n : n"
+                                                v-for="n in 12"
+                                                v-bind:disabled="n < minCardMonth"
+                                                v-bind:key="n">{{n < 10 ? '0' +
+                                                n : n}}</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="card-form__col">
+                                    <div class="card-input">
+                                        <label for="cardYear"
+                                            class="card-input__label">Year</label>
+                                        <select
+                                            class="card-input__input -select"
+                                            id="cardYear" v-model="cardYear"
+                                            data-card-field @focus="focusInput"
+                                            @blur="blurInput">
+                                            <option value disabled
+                                                selected>Year</option>
+                                            <option v-bind:value="n"
+                                                v-for="n in calendarYears"
+                                                v-bind:key="n">{{n}}</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="card-form__col -cvv">
+                                    <div class="card-input">
+                                        <label for="cardCvv"
+                                            class="card-input__label">CVV</label>
+                                        <input type="text"
+                                            class="card-input__input"
+                                            id="cardCvv" v-model="cardCvv"
+                                            v-mask="'####'" maxlength="4"
+                                            data-card-field autocomplete="off"
+                                            @focus="focusInput"
+                                            @blur="blurInput">
+                                    </div>
+                                </div>
+                            </div>
+                            <button class="card-form__button hoverable"
+                                @click="submitPayment">Pay Now</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
         <!-- Toast Notification -->
         <div id="toast" class="toast hoverable">Message sent! Thanks for
-            reaching out.</div>
+            reaching out.
+        </div>
+
+        <div id="toast_payment" class="toast hoverable" style="display: none;">
+            Payment successful! Thank you.
+        </div>
 
         <script>
         // Custom Cursor
@@ -913,9 +2226,29 @@
             '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M12 21q-3.775 0-6.387-2.613T3 12q0-3.45 2.25-5.988T11 3.05q.325-.05.575.088t.4.362t.163.525t-.188.575q-.425.65-.638 1.375T11.1 7.5q0 2.25 1.575 3.825T16.5 12.9q.775 0 1.538-.225t1.362-.625q.275-.175.563-.162t.512.137q.25.125.388.375t.087.6q-.35 3.45-2.937 5.725T12 21m0-2q2.2 0 3.95-1.213t2.55-3.162q-.5.125-1 .2t-1 .075q-3.075 0-5.238-2.163T9.1 7.5q0-.5.075-1t.2-1q-1.95.8-3.163 2.55T5 12q0 2.9 2.05 4.95T12 19m-.25-6.75"/></svg>' : 
             '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M12 15q1.25 0 2.125-.875T15 12t-.875-2.125T12 9t-2.125.875T9 12t.875 2.125T12 15m0 2q-2.075 0-3.537-1.463T7 12t1.463-3.537T12 7t3.538 1.463T17 12t-1.463 3.538T12 17M2 13q-.425 0-.712-.288T1 12t.288-.712T2 11h2q.425 0 .713.288T5 12t-.288.713T4 13zm18 0q-.425 0-.712-.288T19 12t.288-.712T20 11h2q.425 0 .713.288T23 12t-.288.713T22 13zm-8-8q-.425 0-.712-.288T11 4V2q0-.425.288-.712T12 1t.713.288T13 2v2q0 .425-.288.713T12 5m0 18q-.425 0-.712-.288T11 22v-2q0-.425.288-.712T12 19t.713.288T13 20v2q0 .425-.288.713T12 23M5.65 7.05L4.575 6q-.3-.275-.288-.7t.288-.725q.3-.3.725-.3t.7.3L7.05 5.65q.275.3.275.7t-.275.7t-.687.288t-.713-.288M18 19.425l-1.05-1.075q-.275-.3-.275-.712t.275-.688q.275-.3.688-.287t.712.287L19.425 18q.3.275.288.7t-.288.725q-.3.3-.725.3t-.7-.3M16.95 7.05q-.3-.275-.288-.687t.288-.713L18 4.575q.275-.3.7-.288t.725.288q.3.3.3.725t-.3.7L18.35 7.05q-.3.275-.7.275t-.7-.275M4.575 19.425q-.3-.3-.3-.725t.3-.7l1.075-1.05q.3-.275.712-.275t.688.275q.3.275.288.688t-.288.712L6 19.425q-.275.3-.7.288t-.725-.288M12 12"/></svg>';
 
-        function openModal(text) {
-            document.getElementById('modal-text').textContent = text;
-            document.getElementById('modal').style.display = 'block';
+        function openModal(project) {
+            document.getElementById('modal-title').textContent = project.title;
+            document.getElementById('modal-image').src = project.image;
+            document.getElementById('modal-description').textContent = project.description;
+            document.querySelector('#modal-client p').textContent = project.client;
+            document.querySelector('#modal-service p').textContent = project.service;
+            document.querySelector('#modal-date p').textContent = project.date;
+            document.querySelector('#modal-duration p').textContent = project.duration;
+            document.querySelector('#modal-goal p').textContent = project.goal;
+
+            const modal = document.getElementById('modal');
+            modal.style.display = 'flex';
+
+            // Animate sections with stagger
+            const sections = document.querySelectorAll('.modal-section');
+            gsap.from(sections, {
+                opacity: 0,
+                y: 20,
+                duration: 0.5,
+                stagger: 0.1,
+                ease: 'power2.out',
+                delay: 0.2
+            });
         }
 
         function closeModal() {
@@ -955,18 +2288,198 @@
                 });
             });
         });
+
+        // Navigation active state
+        const links = document.querySelectorAll('.nav-links a');
+        links.forEach(link => {
+            link.addEventListener('click', function() {
+                // Remove active from all
+                links.forEach(l => l.classList.remove('active'));
+                // Add active to clicked one
+                this.classList.add('active');
+            });
+        });
     </script>
-                    <script>
-                        const links = document.querySelectorAll('.nav-links a');
-                    
-                        links.forEach(link => {
-                            link.addEventListener('click', function() {
-                                // remove active from all
-                                links.forEach(l => l.classList.remove('active'));
-                                // add active to clicked one
-                                this.classList.add('active');
-                            });
-                        });
-                    </script>
+        <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        Vue.use(VueTheMask);
+        new Vue({
+            el: "#app",
+            data() {
+                return {
+                    currentCardBackground: Math.floor(Math.random() * 25 + 1),
+                    cardName: "",
+                    cardNumber: "",
+                    cardMonth: "",
+                    cardYear: "",
+                    cardCvv: "",
+                    minCardYear: new Date().getFullYear(),
+                    amexCardMask: "#### ###### #####",
+                    otherCardMask: "#### #### #### ####",
+                    cardNumberTemp: "",
+                    isCardFlipped: false,
+                    focusElementStyle: null,
+                    isInputFocused: false
+                };
+            },
+            mounted() {
+                this.cardNumberTemp = this.otherCardMask;
+                document.getElementById("cardNumber").focus();
+            },
+            
+            computed: {
+                getCardType() {
+                    let number = this.cardNumber;
+                    let re = new RegExp("^4");
+                    if (number.match(re) != null) return "visa";
+                    re = new RegExp("^(34|37)");
+                    if (number.match(re) != null) return "amex";
+                    re = new RegExp("^5[1-5]");
+                    if (number.match(re) != null) return "mastercard";
+                    re = new RegExp("^6011");
+                    if (number.match(re) != null) return "discover";
+                    return "visa";
+                },
+                cardYearShort() {
+        return this.cardYear ? String(this.cardYear).slice(-2) : "";
+    },
+                generateCardNumberMask() {
+                    return this.getCardType === "amex" ? this.amexCardMask : this.otherCardMask;
+                },
+                minCardMonth() {
+                    if (this.cardYear === this.minCardYear) return new Date().getMonth() + 1;
+                    return 1;
+                },
+                
+                calendarYears() {
+                    const years = [];
+                    const currentYear = new Date().getFullYear();
+                    for (let i = currentYear; i <= currentYear + 8; i++) {
+                        years.push(i);
+                    }
+                    return years;
+                }
+            },
+            watch: {
+                cardYear() {
+                    if (this.cardMonth < this.minCardMonth) {
+                        this.cardMonth = "";
+                    }
+                }
+            },
+            methods: {
+                flipCard(status) {
+                    this.isCardFlipped = status;
+                },
+                focusInput(e) {
+                    this.isInputFocused = true;
+                    let targetRef = e.target.dataset.cardField;
+                    let target = this.$refs[targetRef];
+                    this.focusElementStyle = target ? {
+                        width: `${target.offsetWidth}px`,
+                        height: `${target.offsetHeight}px`,
+                        transform: `translateX(${target.offsetLeft}px) translateY(${target.offsetTop}px)`
+                    } : null;
+                    if (e.target.id === 'cardCvv') {
+                        this.flipCard(true);
+                    }
+                },
+                blurInput(e) {
+                    let vm = this;
+                    setTimeout(() => {
+                        if (!vm.isInputFocused) {
+                            vm.focusElementStyle = null;
+                        }
+                    }, 300);
+                    this.isInputFocused = false;
+                    if (e.target.id === 'cardCvv') {
+                        this.flipCard(false);
+                    }
+                },
+                submitPayment() {
+    // Basic validation
+    if (!this.cardNumber || !this.cardName || !this.cardMonth || !this.cardYear || !this.cardCvv) {
+        const toast = document.getElementById('toast_payment');
+        toast.textContent = 'Please fill out all fields';
+        toast.style.backgroundColor = '#f44336'; // Red for error
+        toast.style.display = 'block';
+        toast.classList.add('show');
+        setTimeout(() => {
+            toast.classList.remove('show');
+            setTimeout(() => {
+                toast.style.display = 'none';
+                toast.style.backgroundColor = '#4caf50'; // Reset to success color
+                toast.textContent = 'Payment successful! Thank you.'; // Reset message
+            }, 300);
+        }, 3000);
+        return;
+    }
+
+    // Existing submitPayment logic (toast, clear fields, close modal)
+    const toast = document.getElementById('toast_payment');
+    toast.style.display = 'block';
+    toast.classList.add('show');
+    setTimeout(() => {
+        toast.classList.remove('show');
+        setTimeout(() => {
+            toast.style.display = 'none';
+        }, 300);
+    }, 3000);
+
+    this.cardNumber = "";
+    this.cardName = "";
+    this.cardMonth = "";
+    this.cardYear = "";
+    this.cardCvv = "";
+    this.isCardFlipped = false;
+    this.cardNumberTemp = this.otherCardMask;
+
+    closePaymentModal();
+}
+            }
+        });
+    });
+
+    function openPaymentModal(plan, price) {
+        document.getElementById('payment-plan-title').textContent = plan;
+        document.getElementById('payment-plan-price').textContent = price;
+        document.getElementById('payment-modal').style.display = 'flex';
+    }
+
+    function closePaymentModal() {
+        document.getElementById('payment-modal').style.display = 'none';
+    }
+</script>
+<script>
+    // Disable right-click
+    document.addEventListener("contextmenu", function(e) {
+        e.preventDefault();
+    });
+    
+    // Disable text selection
+    document.addEventListener("selectstart", function(e) {
+        e.preventDefault();
+    });
+    
+    // Disable common inspect shortcuts
+    document.addEventListener("keydown", function(e) {
+        // F12
+        if (e.key === "F12") {
+            e.preventDefault();
+        }
+        // Ctrl+Shift+I, Ctrl+Shift+J, Ctrl+U, Ctrl+S
+        if ((e.ctrlKey && e.shiftKey && (e.key === "I" || e.key === "J")) ||
+            (e.ctrlKey && (e.key === "U" || e.key === "S"))) {
+            e.preventDefault();
+        }
+    });
+    </script>
+        <script
+            src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.min.js"></script>
+        <script
+            src="https://cdn.jsdelivr.net/npm/vue-the-mask@0.11.1/dist/vue-the-mask.min.js"></script>
+        <link
+            href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Source+Code+Pro:wght@400;500;600;700&family=Source+Sans+Pro:wght@400;600;700&display=swap"
+            rel="stylesheet">
     </body>
 </html>
